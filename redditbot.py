@@ -1,9 +1,14 @@
 #!/usr/bin/python3
 import praw
-import time
-import pandas as pd
 import textwrap
 import datetime as dt
+from fpdf import FPDF
+
+
+#pdf = FPDF()
+#pdf.add_page()
+#pdf.set_font("times", size=12)
+#pdf.cell(200, 10, txt="Top 10 Posts Today from r/Coronavirus", ln=1, align="C")
 
 #color configurations
 class color:
@@ -23,18 +28,12 @@ reddit = praw.Reddit("config1", user_agent="redditbot1004 user agent")
 subreddit = reddit.subreddit("Coronavirus")
 
 
-# store everything into a file
-#file = open('file.txt', 'w')#.write(output)
-
-# header to the file
-#file.write('Top 10 Posts Today from r/Coronavirus' + '\n')
-#file.write('-------------------------------------' + '\n\n')
-
-print(color.BOLD + color.RED + 'Top 10 Posts Today from r/Coronavirus' + color.END)
+#print(color.BOLD + color.RED + 'Top 10 Posts Today from r/Coronavirus' + color.END)
 hot_posts = subreddit.hot(limit=10)
 for post in hot_posts:
     #print post title
     print(color.BOLD + post.title + color.END)
+    #pdf.cell(200, 10, txt=color.BOLD + post.title + color.END, ln=1, align="L")
     #print timestamp in readable format
     print(dt.datetime.fromtimestamp(post.created))
     #specifies to not load more top comments
@@ -53,4 +52,7 @@ for post in hot_posts:
         if count == 2:
             break
 
+#pdf.output(dest="summary.pdf").encode('latin-1')
+#next features: possibly output to pdf for easier reading
+#or put it on a public server and make the bot comment it on every covid daily discussion post
 
